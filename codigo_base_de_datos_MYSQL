@@ -1,0 +1,167 @@
+CREATE DATABASE polleria; 
+
+USE polleria; 
+
+  
+
+CREATE TABLE productos ( 
+
+    id_producto INT AUTO_INCREMENT PRIMARY KEY, 
+
+    nombre VARCHAR(100) NOT NULL, 
+
+    precio DECIMAL(10,2) NOT NULL, 
+
+    stock INT NOT NULL 
+
+); 
+
+  
+
+INSERT INTO productos (nombre, precio, stock) 
+
+VALUES 
+
+('pollo al chiltepin', 150, 40), 
+
+('pollo asado', 120, 30), 
+
+('pollo adobado', 130, 20), 
+
+('pollo con salsa de cacahuate', 140, 15); 
+
+  
+
+  
+
+CREATE TABLE clientes ( 
+
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY, 
+
+    nombre VARCHAR(100) NOT NULL, 
+
+    telefono int (20), 
+
+    correo VARCHAR(100) 
+
+); 
+
+  
+
+INSERT INTO clientes (nombre, telefono, correo) 
+
+VALUES 
+
+('Juan Pérez', 22812345, 'juan@gmail.com'), 
+
+('Gustavo Salazar', 22099876, 'gustavo@gmail.com'), 
+
+('Cesar Fabian', 22676767, 'cesar@gmail.com'), 
+
+('Ulices Anell', 22566767, 'ulices@gmail.com'); 
+
+  
+
+  
+
+CREATE TABLE pedidos ( 
+
+    id_pedido INT AUTO_INCREMENT PRIMARY KEY, 
+
+    id_cliente INT NOT NULL, 
+
+    fecha DATETIME NOT NULL, 
+
+    total DECIMAL(10,2) NOT NULL, 
+
+    estado VARCHAR(30) NOT NULL, 
+
+  
+
+    FOREIGN KEY (id_cliente) 
+
+    REFERENCES clientes(id_cliente) 
+
+); 
+
+  
+
+INSERT INTO pedidos (id_cliente, fecha, total, estado) 
+
+VALUES 
+
+(1, '2026-09-30 12:30:00', 300.00, 'Pendiente'), 
+
+(2, '2026-09-30 13:00:00', 260.00, 'Preparando'), 
+
+(3, '2026-09-30 13:30:00', 140.00, 'Entregado'), 
+
+(4, '2026-09-30 14:00:00', 380.00, 'Pendiente'); 
+
+  
+
+CREATE TABLE detalle_pedido ( 
+
+    id_detalle INT AUTO_INCREMENT PRIMARY KEY, 
+
+    id_pedido INT NOT NULL, 
+
+    id_producto INT NOT NULL, 
+
+    cantidad INT NOT NULL, 
+
+    precio DECIMAL(10,2) NOT NULL, 
+
+  
+
+    FOREIGN KEY (id_pedido) 
+
+    REFERENCES pedidos(id_pedido), 
+
+  
+
+    FOREIGN KEY (id_producto) 
+
+    REFERENCES productos(id_producto) 
+
+); 
+
+  
+
+INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio) 
+
+VALUES 
+
+(1, 1, 2, 150.00), 
+
+(2, 3, 2, 130.00), 
+
+(3, 4, 1, 140.00), 
+
+(4, 2, 1, 120.00), 
+
+(4, 3, 2, 130.00); 
+
+  
+
+CREATE TABLE usuarios ( 
+
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY, 
+
+    usuario VARCHAR(50) NOT NULL UNIQUE, 
+
+    contrasena VARCHAR(255) NOT NULL, 
+
+    rol VARCHAR(20) NOT NULL 
+
+); 
+
+  
+
+INSERT INTO usuarios (usuario, contrasena, rol) 
+
+VALUES 
+
+('gustavo', '12345', 'admin'), 
+
+('cesar', '1234', 'empleado'); 
